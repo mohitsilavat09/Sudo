@@ -1,0 +1,11 @@
+{
+  "name": "ai-study-helper-photo-text",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "tesseract.js": "^5.0.4"
+  }
+}
