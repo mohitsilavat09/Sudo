@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Study Helper</title>
+  <link rel="stylesheet" href="/src/styles.css" />
+</head>
+<body>
+
+  <div class="app">
+    <h1>📘 AI Study Helper</h1>
+    <p class="subtitle">Solve questions by typing or clicking photo</p>
+
+    <textarea id="question" placeholder="Type your question here..."></textarea>
+
+    <label class="upload">
+      📷 Upload Question Image
+      <input type="file" id="imageInput" accept="image/*" capture="environment" hidden />
+    </label>
+
+    <button onclick="solve()">Solve</button>
+
+    <div id="loading" class="loading">⏳ Solving...</div>
+
+    <div id="answer" class="answer"></div>
+
+    <p class="disclaimer">
+      For learning only. This app does not promote cheating.
+    </p>
+  </div>
+
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>
