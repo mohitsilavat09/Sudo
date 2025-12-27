@@ -2,32 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>AI Study Helper</title>
-  <link rel="stylesheet" href="/src/styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SUDO</title>
+  <link rel="stylesheet" href="/style.css" />
 </head>
+
 <body>
+  <div class="app-container">
+    <header class="header">
+      <h1>SUDO</h1>
+      <p>Solve questions by typing or clicking photo</p>
+    </header>
 
-  <div class="app">
-    <h1>📘 AI Study Helper</h1>
-    <p class="subtitle">Solve questions by typing or clicking photo</p>
+    <main class="card">
+      <textarea
+        id="question"
+        placeholder="Type your question here..."
+      ></textarea>
 
-    <textarea id="question" placeholder="Type your question here..."></textarea>
+      <label class="upload-btn">
+        📷 Upload Question Image
+        <input type="file" id="imageInput" accept="image/*" hidden />
+      </label>
 
-    <label class="upload">
-      📷 Upload Question Image
-      <input type="file" id="imageInput" accept="image/*" capture="environment" hidden />
-    </label>
+      <button class="solve-btn" onclick="solve()">Solve</button>
 
-    <button onclick="solve()">Solve</button>
+      <div id="result" class="result-box">
+        Your answer will appear here...
+      </div>
+    </main>
 
-    <div id="loading" class="loading">⏳ Solving...</div>
-
-    <div id="answer" class="answer"></div>
-
-    <p class="disclaimer">
+    <footer class="footer">
       For learning only. This app does not promote cheating.
-    </p>
+    </footer>
   </div>
 
   <script type="module" src="/src/app.js"></script>
