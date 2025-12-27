@@ -78,11 +78,14 @@ ${questionText}
             {
               parts: [{ text: prompt }]
             }
-          ]
-        })
-      }
-    );
-
+          ],
+            generationConfig: {
+    temperature: 0.4,
+    maxOutputTokens: 800,
+    topP: 0.9,
+    topK: 40
+   } 
+ })  
     const data = await response.json();
     console.log("Gemini response:", data);
 
