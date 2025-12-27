@@ -3,44 +3,48 @@ import Tesseract from "tesseract.js";
 /* =========================
    CONFIG
 ========================= */
-const API_KEY = import.meta.env?.VITE_GEMINI_API_KEY;
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 /* =========================
    ELEMENTS
 ========================= */
-const questionBox = document.getElementById("question");
+const questionInput = document.getElementById("question");
 const imageInput = document.getElementById("imageInput");
 const resultBox = document.getElementById("result");
 
 /* =========================
-   MAIN SOLVE FUNCTION
+   MAIN FUNCTION
 ========================= */
 window.solve = async function () {
-  // 1️⃣ API key check
+  // 🔴 API key missing
   if (!API_KEY) {
     resultBox.innerText =
       "❌ API key missing. Add VITE_GEMINI_API_KEY in Vercel.";
     return;
   }
 
-  let questionText = questionBox.value.trim();
+  let questionText = questionInput.value.trim();
 
-  // 2️⃣ OCR if image selected and text empty
+  /* =========================
+     OCR FROM IMAGE
+  ========================= */
   if (!questionText && imageInput.files.length > 0) {
     resultBox.innerText = "📸 Reading image...";
     try {
-      const ocrResult = await Tesseract.recognize(
+      const ocr = await Tesseract.recognize(
         imageInput.files[0],
         "eng"
       );
-      questionText = ocrResult.data.text.trim();
+      questionText = ocr.data.text.trim();
     } catch (err) {
-      resultBox.innerText = "❌ Error reading image.";
+      resultBox.innerText = "❌ Could not read image.";
       return;
     }
   }
 
-  // 3️⃣ No question found
+  /* =========================
+     NO QUESTION
+  ========================= */
   if (!questionText) {
     resultBox.innerText = "✏️ Please type or upload a clear question.";
     return;
@@ -48,7 +52,9 @@ window.solve = async function () {
 
   resultBox.innerText = "🤖 Solving...";
 
-  // 4️⃣ Prompt
+  /* =========================
+     PROMPT
+  ========================= */
   const prompt = `
 You are an AI study helper for Indian students (Class 6–12).
 
@@ -64,7 +70,9 @@ Question:
 ${questionText}
 `;
 
-  // 5️⃣ Gemini API call (LATEST MODEL)
+  /* =========================
+     GEMINI API CALL
+  ========================= */
   try {
     const response = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
@@ -79,13 +87,16 @@ ${questionText}
               parts: [{ text: prompt }]
             }
           ],
-            generationConfig: {
-    temperature: 0.4,
-    maxOutputTokens: 800,
-    topP: 0.9,
-    topK: 40
-   } 
- })  
+          generationConfig: {
+            temperature: 0.4,
+            maxOutputTokens: 800,
+            topP: 0.9,
+            topK: 40
+          }
+        })
+      }
+    );
+
     const data = await response.json();
     console.log("Gemini response:", data);
 
@@ -94,7 +105,7 @@ ${questionText}
 
     if (!answer) {
       resultBox.innerText =
-        "⚠️ AI could not generate an answer. Try rephrasing the question.";
+        "⚠️ AI could not generate an answer. Please try another question.";
       return;
     }
 
