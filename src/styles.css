@@ -1,23 +1,26 @@
 * {
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 body {
   margin: 0;
-  background: #f2f4f8;
-  color: #333;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef2ff, #f9fafb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .app-container {
-  max-width: 480px;
-  margin: auto;
+  width: 100%;
+  max-width: 420px;
   padding: 16px;
 }
 
 .header {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .header h1 {
@@ -26,72 +29,68 @@ body {
 }
 
 .header p {
+  margin: 4px 0 0;
   font-size: 14px;
   color: #555;
 }
 
 .card {
-  background: #ffffff;
-  border-radius: 14px;
-  padding: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
 }
 
 textarea {
   width: 100%;
   min-height: 120px;
   padding: 12px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #ccc;
   font-size: 15px;
-  resize: none;
   margin-bottom: 12px;
 }
 
 .upload-btn {
   display: block;
   text-align: center;
-  background: #e9eefc;
-  color: #2f4ddb;
+  background: #eef2ff;
+  color: #3730a3;
   padding: 10px;
-  border-radius: 10px;
-  font-weight: bold;
+  border-radius: 12px;
+  font-weight: 600;
   cursor: pointer;
   margin-bottom: 12px;
 }
 
-.upload-btn:hover {
-  background: #dce4ff;
-}
-
 .solve-btn {
   width: 100%;
-  background: #000000;
-  color: black;
+  background: #4f46e5;
+  color: white;
   border: none;
   padding: 12px;
   font-size: 16px;
-  border-radius: 12px;
+  border-radius: 14px;
   cursor: pointer;
   margin-bottom: 14px;
 }
 
 .solve-btn:hover {
-  background: #243ccf;
+  background: #4338ca;
 }
 
 .result-box {
-  background: #f7f9ff;
-  border-radius: 10px;
+  background: #f8fafc;
+  border-radius: 12px;
   padding: 12px;
   font-size: 15px;
   white-space: pre-wrap;
-  min-height: 80px;
+  min-height: 90px;
 }
 
 .footer {
   text-align: center;
   font-size: 12px;
   color: #666;
-  margin-top: 16px;
+  margin-top: 14px;
 }
