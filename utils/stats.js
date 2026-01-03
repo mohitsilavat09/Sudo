@@ -1,10 +1,31 @@
-export function calculateStats(tasks) {
-  const done = t => t.done;
+// utils/stats.js
+
+export function calculateStats(tasks = []) {
+  const completed = tasks.filter(t => t.done).length;
+  const total = tasks.length;
+
+  const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
 
   return {
-    today: { total: tasks.length, completed: tasks.filter(done).length, percent: 50 },
-    week: { total: tasks.length, completed: tasks.filter(done).length, percent: 50 },
-    month: { total: tasks.length, completed: tasks.filter(done).length, percent: 50 },
-    year: { total: tasks.length, completed: tasks.filter(done).length, percent: 50 }
+    today: {
+      total,
+      completed,
+      percent
+    },
+    week: {
+      total,
+      completed,
+      percent
+    },
+    month: {
+      total,
+      completed,
+      percent
+    },
+    year: {
+      total,
+      completed,
+      percent
+    }
   };
 }
