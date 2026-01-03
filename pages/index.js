@@ -1,35 +1,46 @@
 import { useState, useEffect } from "react";
 import TaskItem from "../components/TaskItem";
-import TaskModel from "../components/TaskModel";
+import TaskModal from "../components/TaskModel"; // IMPORTANT: matches TaskModel.js
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);
-  const [showModel, setShowModel] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
+  // Load tasks from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem("tasks");
-    if (saved) setTasks(JSON.parse(saved));
+    if (typeof window !== "undefined") {
+      const savedTasks = localStorage.getItem("tasks");
+      if (savedTasks) {
+        setTasks(JSON.parse(savedTasks));
+      }
+    }
   }, []);
 
+  // Save tasks to localStorage
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
   }, [tasks]);
 
+  // Add new task
   const addTask = (task) => {
     setTasks([...tasks, task]);
-    setShowModel(false);
+    setShowModal(false);
   };
 
+  // Toggle task complete
   const toggleTask = (id) => {
     setTasks(
-      tasks.map(t =>
-        t.id === id ? { ...t, done: !t.done } : t
+      tasks.map((task) =>
+        task.id === id ? { ...task, done: !task.done } : task
       )
     );
   };
 
+  // Delete task
   const deleteTask = (id) => {
-    setTasks(tasks.filter(t => t.id !== id));
+    setTasks(tasks.filter((task) => task.id !== id));
   };
 
   return (
@@ -40,7 +51,7 @@ export default function Home() {
         <p className="empty">Nothing to do 🌴</p>
       )}
 
-      {tasks.map(task => (
+      {tasks.map((task) => (
         <TaskItem
           key={task.id}
           task={task}
@@ -49,9 +60,18 @@ export default function Home() {
         />
       ))}
 
-      <button className="fab" onClick={() => setShowModel(true)}>+</button>
+      {/* Floating Add Button */}
+      <button className="fab" onClick={() => setShowModal(true)}>
+        +
+      </button>
 
-      {showModal && <TaskModel onAdd={addTask} onClose={() => setShowModel(false)} />}
+      {/* Task Modal */}
+      {showModal && (
+        <TaskModal
+          onAdd={addTask}
+          onClose={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 }
