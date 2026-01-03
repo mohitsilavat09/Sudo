@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import TaskItem from "../components/TaskItem";
-import TaskModal from "../components/TaskModal";
+import TaskModel from "../components/TaskModel";
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showModel, setShowModel] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("tasks");
@@ -17,7 +17,7 @@ export default function Home() {
 
   const addTask = (task) => {
     setTasks([...tasks, task]);
-    setShowModal(false);
+    setShowModel(false);
   };
 
   const toggleTask = (id) => {
@@ -49,9 +49,9 @@ export default function Home() {
         />
       ))}
 
-      <button className="fab" onClick={() => setShowModal(true)}>+</button>
+      <button className="fab" onClick={() => setShowModel(true)}>+</button>
 
-      {showModal && <TaskModal onAdd={addTask} onClose={() => setShowModal(false)} />}
+      {showModal && <TaskModel onAdd={addTask} onClose={() => setShowModel(false)} />}
     </div>
   );
 }
