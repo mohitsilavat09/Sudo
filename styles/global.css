@@ -1,108 +1,40 @@
 body {
-  margin: 0;
-  background: #071f33;
-  font-family: Arial, sans-serif;
+  font-family: sans-serif;
+  background: #0f172a;
   color: white;
 }
-
 .container {
   padding: 20px;
 }
-
-h1 {
-  font-size: 28px;
-}
-
-.empty {
-  opacity: 0.6;
-}
-
-.task-card {
+.task {
+  background: #1e293b;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 10px;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #0f3a5f;
-  padding: 16px;
-  border-radius: 16px;
-  margin-bottom: 12px;
+  gap: 10px;
 }
-
-.task-content {
-  flex: 1;
-}
-
-.task-meta {
-  font-size: 13px;
-  color: #bcd7ea;
-}
-
-.delete-btn {
-  background: none;
-  border: none;
-  font-size: 18px;
-}
-
-.done h3 {
-  text-decoration: line-through;
+.done {
   opacity: 0.6;
 }
-
 .fab {
   position: fixed;
-  right: 20px;
   bottom: 20px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #e0e0e0;
-  font-size: 28px;
-  border: none;
+  right: 20px;
+  font-size: 24px;
 }
-
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,.8);
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-box {
-  background: #0f3a5f;
+  flex-direction: column;
+  gap: 10px;
   padding: 20px;
-  border-radius: 16px;
-  width: 90%;
 }
-
-.modal-box input {
-  width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-}
-
-.repeat-days {
-  display: flex;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.repeat-days button {
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: none;
-  background: #1e4f73;
-  color: white;
-}
-
-.repeat-days .active {
-  background: #4da3ff;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
+.card {
+  background: #1e293b;
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 12px;
 }
