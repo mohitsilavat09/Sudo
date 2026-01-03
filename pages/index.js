@@ -1,97 +1,37 @@
-import { useEffect, useState } from "react";
-import TaskItem from "../components/TaskItem";
-import TaskModal from "../components/TaskModel";
+import { useState, useEffect } from 'react';
+import TaskItem from '../components/TaskItem';
+import TaskModel from '../components/TaskModel';
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  // Load tasks
   useEffect(() => {
-    const saved = localStorage.getItem("tasks");
-    if (saved) setTasks(JSON.parse(saved));
+    const data = localStorage.getItem('tasks');
+    if (data) setTasks(JSON.parse(data));
   }, []);
 
-  // Save tasks
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
   }, [tasks]);
 
-  // Ask notification permission
-  useEffect(() => {
-    if ("Notification" in window) {
-      Notification.requestPermission();
-    }
-  }, []);
+  const addTask = (task) => setTasks([...tasks, task]);
 
-  // Alarm checker
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const now = new Date();
-      const today = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][now.getDay()];
-
-      tasks.forEach((task) => {
-        if (!task.date || !task.time) return;
-
-        const taskDate = new Date(`${task.date}T${task.time}`);
-        const repeatOK =
-          task.repeatDays.length === 0 ||
-          task.repeatDays.includes(today);
-
-        if (
-          repeatOK &&
-          Math.abs(now - taskDate) < 60000 &&
-          Notification.permission === "granted"
-        ) {
-          new Notification("⏰ Task Reminder", {
-            body: task.title,
-          });
-        }
-      });
-    }, 60000);
-
-    return () => clearInterval(timer);
-  }, [tasks]);
-
-  const addTask = (task) => {
-    setTasks([...tasks, task]);
-    setShowModal(false);
-  };
-
-  const toggleTask = (id) => {
-    setTasks(
-      tasks.map((t) =>
-        t.id === id ? { ...t, done: !t.done } : t
-      )
-    );
-  };
-
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id));
+  const toggle = (id) => {
+    setTasks(tasks.map(t => t.id === id ? { ...t, done: !t.done } : t));
   };
 
   return (
     <div className="container">
-      <h1>To Do List</h1>
+      <h1>Taskzen</h1>
 
-      {tasks.length === 0 && (
-        <p className="empty">Nothing to do 🌴</p>
-      )}
-
-      {tasks.map((task) => (
-        <TaskItem
-          key={task.id}
-          task={task}
-          onToggle={toggleTask}
-          onDelete={deleteTask}
-        />
+      {tasks.map(task => (
+        <TaskItem key={task.id} task={task} onToggle={toggle} />
       ))}
 
-      <button className="fab" onClick={() => setShowModal(true)}>+</button>
+      <button className="fab" onClick={() => setOpen(true)}>+</button>
 
-      {showModal && (
-        <TaskModal onAdd={addTask} onClose={() => setShowModal(false)} />
-      )}
+      {open && <TaskModel onAdd={addTask} onClose={() => setOpen(false)} />}
     </div>
   );
 }
