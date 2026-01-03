@@ -19,7 +19,7 @@ export default function TaskModal({ onAdd, onClose }) {
   return (
     <div className="modal">
       <div className="modal-box">
-        <h2>NEW Task</h2>
+        <h2>NEW TASK</h2>
 
         <input placeholder="Task name" onChange={e => setTitle(e.target.value)} />
         <input type="date" onChange={e => setDate(e.target.value)} />
