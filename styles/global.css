@@ -1,45 +1,61 @@
 body {
   margin: 0;
-  font-family: sans-serif;
-  background: #0b2d4f;
+  background: #071f33;
+  font-family: Arial, sans-serif;
   color: white;
 }
 
 .container {
   padding: 20px;
-  max-width: 500px;
-  margin: auto;
 }
 
-.task {
-  background: #134e7c;
-  padding: 13px;
-  margin-bottom: 10px;
-  border-radius: 12px;
+h1 {
+  font-size: 28px;
+}
+
+.empty {
+  opacity: 0.6;
+}
+
+.task-card {
   display: flex;
   align-items: center;
+  gap: 12px;
+  background: #0f3a5f;
+  padding: 16px;
+  border-radius: 16px;
+  margin-bottom: 12px;
 }
 
-.task.done {
-  opacity: 0.6;
-  text-decoration: line-through;
-}
-
-.task .info {
+.task-content {
   flex: 1;
-  margin-left: 10px;
+}
+
+.task-meta {
+  font-size: 13px;
+  color: #bcd7ea;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+}
+
+.done h3 {
+  text-decoration: line-through;
+  opacity: 0.6;
 }
 
 .fab {
   position: fixed;
-  bottom: 20px;
   right: 20px;
+  bottom: 20px;
   width: 56px;
   height: 56px;
   border-radius: 50%;
+  background: #e0e0e0;
   font-size: 28px;
-  background: white;
-  color: #0b2d4f;
   border: none;
 }
 
@@ -53,27 +69,40 @@ body {
 }
 
 .modal-box {
-  background: #134e7c;
+  background: #0f3a5f;
   padding: 20px;
-  border-radius: 12px;
+  border-radius: 16px;
   width: 90%;
 }
 
-input {
+.modal-box input {
   width: 100%;
-  padding: 10px;
   margin-top: 10px;
+  padding: 10px;
   border-radius: 8px;
   border: none;
+}
+
+.repeat-days {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.repeat-days button {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: #1e4f73;
+  color: white;
+}
+
+.repeat-days .active {
+  background: #4da3ff;
 }
 
 .actions {
   display: flex;
   justify-content: space-between;
   margin-top: 15px;
-}
-
-.empty {
-  text-align: center;
-  opacity: 0.7;
 }
