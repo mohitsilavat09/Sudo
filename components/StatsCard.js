@@ -4,9 +4,17 @@ export default function StatsCard({ title, data }) {
   return (
     <div className="card">
       <h3>{title}</h3>
-      <p>Total: {data.total}</p>
-      <p>Completed: {data.completed}</p>
-      <p>Progress: {data.percent}%</p>
+
+      <p>Total Tasks: {data.totalTasks}</p>
+      <p>Completed Tasks: {data.completedTasks}</p>
+
+      {data.todayTotal !== undefined && (
+        <p>
+          Today: {data.todayCompleted} / {data.todayTotal}
+        </p>
+      )}
+
+      <p>Progress: {data.completionRate}%</p>
     </div>
   );
 }
