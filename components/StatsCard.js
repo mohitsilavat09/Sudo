@@ -2,19 +2,27 @@ export default function StatsCard({ title, data }) {
   if (!data) return null;
 
   return (
-    <div className="card">
+    <div className="stats-card">
       <h3>{title}</h3>
 
-      <p>Total Tasks: {data.totalTasks}</p>
-      <p>Completed Tasks: {data.completedTasks}</p>
+      <div className="stats-row">
+        <span>Total</span>
+        <strong>{data.totalTasks}</strong>
+      </div>
 
-      {data.todayTotal !== undefined && (
-        <p>
-          Today: {data.todayCompleted} / {data.todayTotal}
-        </p>
-      )}
+      <div className="stats-row">
+        <span>Completed</span>
+        <strong>{data.completedTasks}</strong>
+      </div>
 
-      <p>Progress: {data.completionRate}%</p>
+      <div className="progress-bar">
+        <div
+          className="progress-fill"
+          style={{ width: `${data.completionRate}%` }}
+        />
+      </div>
+
+      <small>{data.completionRate}% done</small>
     </div>
   );
 }
