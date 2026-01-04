@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getStats } from "../utils/stats";
-import StatsCard from "../components/StatsCard";
+import StreakCard from "../components/StreakCard";
 
 export default function StatsPage() {
   const [stats, setStats] = useState(null);
@@ -15,11 +15,7 @@ export default function StatsPage() {
   return (
     <div className="stats-page">
       <h1>Your Progress</h1>
-
-      <StatsCard title="Today" data={stats.today} />
-      <StatsCard title="This Week" data={stats.week} />
-      <StatsCard title="This Month" data={stats.month} />
-      <StatsCard title="This Year" data={stats.year} />
+      <StreakCard streak={stats.streak} />
     </div>
   );
 }
