@@ -100,4 +100,68 @@ button {
 }
 
 /* Add Task */
-.form button
+.form button:first-of-type {
+  background: #2563eb;
+  color: white;
+  margin-bottom: 10px;
+}
+
+/* Cancel */
+.form button:last-of-type {
+  background: #020617;
+  color: #94a3b8;
+  border: 1px solid #1e293b;
+}
+
+/* =========================
+   FLOATING + BUTTON
+========================= */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  font-size: 32px;
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+  color: white;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.6);
+}
+
+/* =========================
+   AI BUTTON
+========================= */
+.ai-btn {
+  margin-top: 24px;
+  background: linear-gradient(145deg, #1e40af, #1d4ed8);
+  color: white;
+  font-weight: 600;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   MOBILE OPTIMIZATION
+========================= */
+@media (max-width: 480px) {
+  h1 {
+    font-size: 34px;
+  }
+
+  .container {
+    padding-bottom: 90px;
+  }
+}
