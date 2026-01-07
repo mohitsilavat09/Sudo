@@ -1,14 +1,46 @@
-export function autoSchedule(tasks) {
-  if (!tasks || tasks.length === 0) return [];
+export function generateSchedule(prompt) {
+  // Simple smart detection
+  const schedule = [];
 
-  let hour = 9;
+  if (prompt.toLowerCase().includes("office")) {
+    schedule.push({
+      title: "Office Work",
+      time: "09:00",
+    });
+    schedule.push({
+      title: "Office Work",
+      time: "17:00",
+    });
+  }
 
-  return tasks.map((task) => {
-    const scheduledTask = {
-      ...task,
-      time: `${hour}:00`,
-    };
-    hour++;
-    return scheduledTask;
-  });
+  if (prompt.toLowerCase().includes("gym")) {
+    schedule.push({
+      title: "Gym Workout",
+      time: "06:30",
+    });
+  }
+
+  if (prompt.toLowerCase().includes("jog")) {
+    schedule.push({
+      title: "Morning Jogging",
+      time: "06:00",
+    });
+  }
+
+  if (prompt.toLowerCase().includes("family")) {
+    schedule.push({
+      title: "Family Time",
+      time: "20:00",
+    });
+  }
+
+  // Default fallback
+  if (schedule.length === 0) {
+    schedule.push({
+      title: "Focus Work",
+      time: "10:00",
+    });
+  }
+
+  return schedule;
 }
