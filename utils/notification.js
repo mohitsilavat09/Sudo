@@ -1,19 +1,28 @@
-// utils/notification.js
+// Ask notification permission
+export async function requestPermission() {
+  if (!("Notification" in window)) return false;
 
-export function notify(title) {
-  if (typeof window === "undefined") return;
+  if (Notification.permission === "granted") return true;
 
-  if (Notification.permission === "granted") {
-    new Notification("Taskzen Reminder", {
-      body: title,
-    });
-  }
+  const permission = await Notification.requestPermission();
+  return permission === "granted";
 }
 
-export function requestPermission() {
-  if (typeof window === "undefined") return;
+// Schedule notification
+export function scheduleNotification(task) {
+  if (!("Notification" in window)) return;
 
-  if (Notification.permission !== "granted") {
-    Notification.requestPermission();
-  }
+  if (Notification.permission !== "granted") return;
+
+  const taskTime = new Date(`${task.date}T${task.time}`);
+  const delay = taskTime.getTime() - Date.now();
+
+  if (delay <= 0) return;
+
+  setTimeout(() => {
+    new Notification("⏰ Task Reminder", {
+      body: task.title,
+      icon: "/icon-192.png",
+    });
+  }, delay);
 }
