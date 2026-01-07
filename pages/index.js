@@ -1,84 +1,109 @@
 import { useState } from "react";
-import { autoSchedule } from "../utils/aiPlanner";
+import { generateSchedule } from "../utils/aiPlanner";
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);
-  const [taskName, setTaskName] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [showAI, setShowAI] = useState(false);
 
+  const [taskName, setTaskName] = useState("");
+  const [taskDate, setTaskDate] = useState("");
+  const [taskTime, setTaskTime] = useState("");
+
+  const [aiPrompt, setAiPrompt] = useState("");
+  const [aiSuggestions, setAiSuggestions] = useState([]);
+
+  // Add task manually
   const addTask = () => {
-    if (!taskName.trim()) return;
+    if (!taskName || !taskDate || !taskTime) return;
 
     setTasks([
       ...tasks,
       {
         id: Date.now(),
-        name: taskName,
-        date: new Date().toISOString().split("T")[0],
-        time: "",
-        done: false,
+        title: taskName,
+        date: taskDate,
+        time: taskTime,
       },
     ]);
 
     setTaskName("");
+    setTaskDate("");
+    setTaskTime("");
     setShowForm(false);
   };
 
-  const toggleDone = (id) => {
-    setTasks(
-      tasks.map((t) =>
-        t.id === id ? { ...t, done: !t.done } : t
-      )
-    );
+  // Run AI
+  const runAI = () => {
+    const result = generateSchedule(aiPrompt);
+    setAiSuggestions(result);
   };
 
-  const deleteTask = (id) => {
-    setTasks(tasks.filter((t) => t.id !== id));
-  };
-
-  const handleAutoSchedule = () => {
-    setTasks(autoSchedule(tasks));
+  // Auto-fill from AI
+  const fillFromAI = (task) => {
+    setTaskName(task.title);
+    setTaskTime(task.time);
+    setTaskDate(new Date().toISOString().split("T")[0]);
+    setShowAI(false);
+    setShowForm(true);
   };
 
   return (
     <div className="container">
       <h1 className="title">Taskzen</h1>
 
-      {tasks.length === 0 && (
-        <p className="empty">No tasks yet</p>
+      {tasks.map((t) => (
+        <div className="task-card" key={t.id}>
+          <span>
+            {t.title}
+            <small>{t.date} • {t.time}</small>
+          </span>
+        </div>
+      ))}
+
+      {/* AI SEARCH BAR */}
+      {showAI && (
+        <div className="form">
+          <input
+            placeholder="Describe your day…"
+            value={aiPrompt}
+            onChange={(e) => setAiPrompt(e.target.value)}
+          />
+          <button onClick={runAI}>Generate Schedule</button>
+
+          {aiSuggestions.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => fillFromAI(s)}
+              style={{ marginTop: "6px" }}
+            >
+              ➕ {s.title} ({s.time})
+            </button>
+          ))}
+
+          <button className="cancel" onClick={() => setShowAI(false)}>
+            Close
+          </button>
+        </div>
       )}
 
-      <div className="task-list">
-        {tasks.map((task) => (
-          <div className="task-card" key={task.id}>
-            <input
-              type="checkbox"
-              checked={task.done}
-              onChange={() => toggleDone(task.id)}
-            />
-            <span className={task.done ? "done" : ""}>
-              {task.name}
-              <small>
-                {task.date} {task.time && `• ${task.time}`}
-              </small>
-            </span>
-            <button
-              className="delete"
-              onClick={() => deleteTask(task.id)}
-            >
-              🗑
-            </button>
-          </div>
-        ))}
-      </div>
-
+      {/* ADD TASK FORM */}
       {showForm && (
         <div className="form">
           <input
-            type="text"
             placeholder="Task name"
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
+          />
+          <input
+            type="date"
+            value={taskDate}
+            onChange={(e) => setTaskDate(e.target.value)}
+          />
+          <input
+            type="time"
+            value={taskTime}
+            onChange={(e) => setTaskTime(e.target.value)}
           />
 
           <button onClick={addTask}>Add Task</button>
@@ -88,8 +113,9 @@ export default function Home() {
         </div>
       )}
 
-      <button className="ai-btn" onClick={handleAutoSchedule}>
-        Auto Schedule (AI)
+      {/* BUTTONS */}
+      <button className="ai-btn" onClick={() => setShowAI(true)}>
+        AI Scheduler
       </button>
 
       <button className="fab" onClick={() => setShowForm(true)}>
