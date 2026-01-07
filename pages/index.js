@@ -1,109 +1,120 @@
-import { useState } from "react";
-import { generateSchedule } from "../utils/aiPlanner";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const [tasks, setTasks] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [showAI, setShowAI] = useState(false);
 
-  const [taskName, setTaskName] = useState("");
-  const [taskDate, setTaskDate] = useState("");
-  const [taskTime, setTaskTime] = useState("");
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
 
-  const [aiPrompt, setAiPrompt] = useState("");
-  const [aiSuggestions, setAiSuggestions] = useState([]);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
-  // Add task manually
+  /* -----------------------------
+     Add to Home Screen handling
+  ------------------------------*/
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const installApp = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    setDeferredPrompt(null);
+  };
+
+  /* -----------------------------
+     Task logic
+  ------------------------------*/
   const addTask = () => {
-    if (!taskName || !taskDate || !taskTime) return;
+    if (!title || !date || !time) return;
 
-    setTasks([
-      ...tasks,
-      {
-        id: Date.now(),
-        title: taskName,
-        date: taskDate,
-        time: taskTime,
-      },
-    ]);
+    const newTask = {
+      id: Date.now(),
+      title,
+      date,
+      time,
+      completed: false,
+    };
 
-    setTaskName("");
-    setTaskDate("");
-    setTaskTime("");
+    setTasks([...tasks, newTask]);
+    setTitle("");
+    setDate("");
+    setTime("");
     setShowForm(false);
   };
 
-  // Run AI
-  const runAI = () => {
-    const result = generateSchedule(aiPrompt);
-    setAiSuggestions(result);
+  const toggleTask = (id) => {
+    setTasks(
+      tasks.map((t) =>
+        t.id === id ? { ...t, completed: !t.completed } : t
+      )
+    );
   };
 
-  // Auto-fill from AI
-  const fillFromAI = (task) => {
-    setTaskName(task.title);
-    setTaskTime(task.time);
-    setTaskDate(new Date().toISOString().split("T")[0]);
-    setShowAI(false);
-    setShowForm(true);
+  const deleteTask = (id) => {
+    setTasks(tasks.filter((t) => t.id !== id));
   };
 
   return (
     <div className="container">
-      <h1 className="title">Taskzen</h1>
+      <h1 className="title">ProDo</h1>
 
-      {tasks.map((t) => (
-        <div className="task-card" key={t.id}>
-          <span>
-            {t.title}
-            <small>{t.date} • {t.time}</small>
-          </span>
-        </div>
-      ))}
-
-      {/* AI SEARCH BAR */}
-      {showAI && (
-        <div className="form">
-          <input
-            placeholder="Describe your day…"
-            value={aiPrompt}
-            onChange={(e) => setAiPrompt(e.target.value)}
-          />
-          <button onClick={runAI}>Generate Schedule</button>
-
-          {aiSuggestions.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => fillFromAI(s)}
-              style={{ marginTop: "6px" }}
-            >
-              ➕ {s.title} ({s.time})
-            </button>
-          ))}
-
-          <button className="cancel" onClick={() => setShowAI(false)}>
-            Close
-          </button>
-        </div>
+      {tasks.length === 0 && (
+        <div className="empty">No tasks yet</div>
       )}
 
-      {/* ADD TASK FORM */}
+      <div className="task-list">
+        {tasks.map((task) => (
+          <div className="task-card" key={task.id}>
+            <input
+              type="checkbox"
+              checked={task.completed}
+              onChange={() => toggleTask(task.id)}
+            />
+
+            <span className={task.completed ? "done" : ""}>
+              {task.title}
+              <small>
+                {task.date} • {task.time}
+              </small>
+            </span>
+
+            <button
+              className="delete"
+              onClick={() => deleteTask(task.id)}
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {/* Add Task Form */}
       {showForm && (
         <div className="form">
           <input
+            type="text"
             placeholder="Task name"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
+
           <input
             type="date"
-            value={taskDate}
-            onChange={(e) => setTaskDate(e.target.value)}
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
           />
+
           <input
             type="time"
-            value={taskTime}
-            onChange={(e) => setTaskTime(e.target.value)}
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
           />
 
           <button onClick={addTask}>Add Task</button>
@@ -113,14 +124,17 @@ export default function Home() {
         </div>
       )}
 
-      {/* BUTTONS */}
-      <button className="ai-btn" onClick={() => setShowAI(true)}>
-        AI Scheduler
-      </button>
-
+      {/* Floating + Button */}
       <button className="fab" onClick={() => setShowForm(true)}>
         +
       </button>
+
+      {/* Add to Home Screen Button (optional) */}
+      {deferredPrompt && (
+        <button className="ai-btn" onClick={installApp}>
+          📲 Add to Home Screen
+        </button>
+      )}
     </div>
   );
 }
